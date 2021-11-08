@@ -6,10 +6,9 @@ const server = new io.Server();
 const clients: { [username: string]: io.Socket } = {};
 const pipeline: Array<{ id: string, sockets: Array<io.Socket> }> = new Array<{ id: string, sockets: Array<io.Socket> }>();
 
-// TODO: store username
-
 server.on('connection', (socket) => {
-  initializeSession(socket);
+  const username = initializeSession(socket);
+  if (!username) return;
 
   socket.on('chat-start', (data, cb) => {
     if (pipeline.find(pipe => pipe.sockets.includes(socket))) {
@@ -47,7 +46,7 @@ server.on('connection', (socket) => {
       }
     });
 
-    console.log(`[${pipe.id}] ${(socket.handshake.query.username as string)}: ${message}`);
+    console.log(`[${pipe.id}] ${username}: ${message}`);
   });
 
   socket.on('chat-end', () => {
@@ -81,12 +80,12 @@ server.on('connection', (socket) => {
     }
 
     for (const client of pipe.sockets) {
-      client.emit('chat-join', status_codes.JOINED_PIPE((socket.handshake.query.username as string).toString()));
+      client.emit('chat-join', status_codes.JOINED_PIPE(username.toString()));
     }
 
     pipe.sockets.push(socket);
 
-    console.log(`${(socket.handshake.query.username as string)} joined ${pipe.id}`);
+    console.log(`${username} joined ${pipe.id}`);
 
     cb();
   });
@@ -134,10 +133,10 @@ server.on('connection', (socket) => {
     pipe.sockets.splice(pipe.sockets.indexOf(socket), 1);
 
     for (const client of pipe.sockets) {
-      client.emit('chat-leave', status_codes.LEFT_PIPE((socket.handshake.query.username as string).toString()));
+      client.emit('chat-leave', status_codes.LEFT_PIPE(username));
     }
 
-    console.log(`${(socket.handshake.query.username as string)} left ${pipe.id}`);
+    console.log(`${username} left ${pipe.id}`);
   
     cb();
   });
@@ -190,6 +189,8 @@ function initializeSession(socket: io.Socket) {
   console.log('New session: ' + username);
 
   socket.emit('chat-error', status_codes.SESSION_INITIALIZED);
+
+  return username;
 }
 
 server.listen(8080);
