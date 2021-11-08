@@ -3,7 +3,8 @@ import status_codes from '@config/status_codes';
 
 const server = new io.Server();
 
-const clients: { [key: string]: io.Socket | { [key: string]: any } } = { };
+const clients: { [key: string]: io.Socket } = {};
+const pipeline: Array<io.Socket[]> = [];
 
 server.on('connection', (socket) => {
   socket.on('initialize-session', (data) => {
@@ -29,9 +30,27 @@ server.on('connection', (socket) => {
     const target = data.toString();
 
     if (!clients[target]) {
-      socket.emit('chat-error', 'Target user does not exist');
+      socket.emit('chat-error', status_codes.TARGET_NOT_FOUND);
       return;
     }
+
+    // Commented out for testing purposes
+    /* if (clients[target].id === socket.id) {
+      socket.emit('chat-error', status_codes.TARGET_SELF);
+      return;
+    } */
+
+    if (pipeline.find((p) => p.includes(socket))) {
+      socket.emit('chat-error', status_codes.ALREADY_IN_PIPELINE);
+      return;
+    }
+
+    if (pipeline.find((p) => p.includes(clients[target]))) {
+      socket.emit('chat-error', status_codes.TARGET_ALREADY_IN_PIPELINE);
+      return;
+    }
+
+    pipeline.push([socket, clients[target]]);
   });
 
   function removeSocketFromClients(socket: io.Socket) {
