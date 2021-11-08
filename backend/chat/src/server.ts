@@ -4,7 +4,9 @@ import status_codes from '@config/status_codes';
 const server = new io.Server();
 
 const clients: { [username: string]: io.Socket } = {};
-const pipeline: Array<{ id: string, sockets: Array<io.Socket> }> = new Array<{ id: string, sockets: Array<io.Socket> }>();
+const pipeline: Array<{ id: string, sockets: Array<io.Socket>, owner: string, admins: string[] }> = new Array<{ id: string, sockets: Array<io.Socket>,  owner: string, admins: string[] }>();
+
+// TODO: Better structure (separate files for events)
 
 server.on('connection', (socket) => {
   const username = initializeSession(socket);
@@ -23,7 +25,9 @@ server.on('connection', (socket) => {
 
     pipeline.push({
       id: pipelineId,
-      sockets: [socket]
+      sockets: [socket],
+      owner: username,
+      admins: []
     });
 
     console.log('New pipe: ' + pipelineId);
@@ -141,17 +145,27 @@ server.on('connection', (socket) => {
     cb();
   });
 
-  function removeSocketFromClients(socket: io.Socket) {
-    const username = socket.handshake.query.username?.toString();
-    if (username) {
+  function handleDisconnect(socket: io.Socket) {
+    const pipe = pipeline.find(pipe => pipe.sockets.includes(socket));
+
+    if (pipe) {
+      pipe.sockets.splice(pipe.sockets.indexOf(socket), 1);
+
+      for (const client of pipe.sockets) {
+        client.emit('chat-left', status_codes.LEFT_PIPE(username || "undefined"));
+      }
+  
+      console.log(`${username} left ${pipe.id}`);
+    }
+
+    if (username)
       delete clients[username];
 
-      console.log('Session ended: ' + username);
-    }
+    console.log('Session ended: ' + username);
   }
 
-  socket.on('disconnect', () => removeSocketFromClients(socket));
-  socket.on('error', () => removeSocketFromClients(socket));
+  socket.on('disconnect', () => handleDisconnect(socket));
+  socket.on('error', () => handleDisconnect(socket));
 });
 
 function initializeSession(socket: io.Socket) {
