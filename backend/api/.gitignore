@@ -1,0 +1,21 @@
+.env
+node_modules/
+.git
+
+# ADD THESE LINES
+# src/tests/
+# build/
+# src/config/
+
+package-lock.json
+.git
+
+dist
+.yarn
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+yarn-error.log 
