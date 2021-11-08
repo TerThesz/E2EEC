@@ -16,4 +16,6 @@ export default new class status_codes {
   TARGET_NOT_IN_PIPE = [ 11, 'Target user is not in the chat room' ];
   REMOVED_FROM_PIPE = [ 12, 'You have been removed from the chat room' ];
   TARGET_REMOVED = (name: string) =>  [ 13, name + ' has been removed from the chat room' ];
+  JOINED_PIPE = (name: string) => [ 14, name + ' has joined the chat room' ];
+  LEFT_PIPE = (name: string) => [ 15, name + ' has left the chat room' ];
 }
