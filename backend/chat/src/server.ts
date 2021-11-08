@@ -34,11 +34,10 @@ server.on('connection', (socket) => {
       return;
     }
 
-    // Commented out for testing purposes
-    /* if (clients[target].id === socket.id) {
+    if (clients[target].id === socket.id) {
       socket.emit('chat-error', status_codes.TARGET_SELF);
       return;
-    } */
+    }
 
     if (pipeline.find((p) => p.includes(socket))) {
       socket.emit('chat-error', status_codes.ALREADY_IN_PIPELINE);
@@ -51,6 +50,8 @@ server.on('connection', (socket) => {
     }
 
     pipeline.push([socket, clients[target]]);
+
+    console.log(`${socket.id} started chat with ${clients[target].id}`);
   });
 
   socket.on('chat-message', (data) => {
@@ -67,6 +68,21 @@ server.on('connection', (socket) => {
         client.emit('chat-message', message);
       }
     });
+
+    console.log(message);
+  });
+
+  socket.on('end-chat', () => {
+    const pipe = pipeline.find((p) => p.includes(socket));
+
+    if (!pipe) {
+      socket.emit('chat-error', status_codes.NOT_IN_PIPELINE);
+      return;
+    }
+
+    pipe.splice(pipe.indexOf(socket), 1);
+
+    console.log(`${socket.id} ended chat with ${pipe[1].id}`);
   });
 
   function removeSocketFromClients(socket: io.Socket) {
