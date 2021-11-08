@@ -53,6 +53,22 @@ server.on('connection', (socket) => {
     pipeline.push([socket, clients[target]]);
   });
 
+  socket.on('chat-message', (data) => {
+    const message = data.toString();
+    const pipe = pipeline.find((p) => p.includes(socket));
+
+    if (!pipe) {
+      socket.emit('chat-error', status_codes.NOT_IN_PIPELINE);
+      return;
+    }
+
+    pipe.forEach((client) => {
+      if (client.id !== socket.id) {
+        client.emit('chat-message', message);
+      }
+    });
+  });
+
   function removeSocketFromClients(socket: io.Socket) {
     const username = Object.keys(clients).find((username) => clients[username] === socket);
     if (username) {
