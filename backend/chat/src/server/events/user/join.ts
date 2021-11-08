@@ -3,7 +3,7 @@ import { CLIENTS, PIPELINE } from '@config/types';
 import status_codes from '@config/status_codes';
 
 export = {
-  name: 'chat-message',
+  name: 'chat-join',
 
   handler(data: Buffer, cb: Function, socket: Socket, clients: CLIENTS, pipeline: PIPELINE, username: string) {
     const pipe = pipeline.find(pipe => pipe.id === data.toString());
