@@ -1,26 +1,22 @@
 import * as io from 'socket.io';
 import status_codes from '@config/status_codes';
-import { CLIENTS, PIPELINE, PIPELINE_OBJ } from '@config/types';
-import { handleEvents, handleDisconnection, handleConnection } from './server/handlers';
+import { event_registry, user_registry } from 'server/registries';
 
 const server = new io.Server();
-
-const clients: CLIENTS = {};
-const pipeline: PIPELINE = new Array<PIPELINE_OBJ>();
 
 // TODO: normalize(normalization... thing);
 
 server.on('connection', (socket) => {
   // Handle connection
-  const username = handleConnection(socket, clients, pipeline);
+  const username = user_registry.onConnect(socket);
   if (!username) return;
 
   // Load event handlers
-  handleEvents(socket, clients, pipeline, username);
+  event_registry.initializeEvents(socket, username);
 
   // Handle disconnection
-  socket.on('disconnect', () => handleDisconnection(socket, clients, pipeline, username));
-  socket.on('error', () => handleDisconnection(socket, clients, pipeline, username));
+  socket.on('disconnect', () => user_registry.onDisconnect(socket, username));
+  socket.on('error', () => user_registry.onDisconnect(socket, username));
 });
 
 server.listen(8080);

@@ -1,8 +1,20 @@
 import { Socket } from 'socket.io';
 
-type CLIENTS = {
-  [username: string]: Socket
+type STATUS = 'online' | 'offline' | 'busy' | 'away';
+
+type USERS = {
+  [username: string]: {
+    username: string,
+    socket: Socket
+  }
+  // TODO: more things
 }
+
+type USER = {
+  username: string,
+  socket: Socket
+}
+
 
 type PIPELINE = Array<{
   id: string,
@@ -19,7 +31,8 @@ type PIPELINE_OBJ = {
 }
 
 export {
-  CLIENTS,
+  USERS,
+  USER,
   PIPELINE,
   PIPELINE_OBJ
 }

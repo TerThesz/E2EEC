@@ -1,5 +1,5 @@
 import { Socket } from 'socket.io';
-import { CLIENTS, PIPELINE } from '@config/types';
+import { USERS, PIPELINE } from '@config/types';
 import status_codes from '@config/status_codes';
 
 export = {
