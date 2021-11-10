@@ -1,38 +1,18 @@
 import { Socket } from 'socket.io';
-
-type STATUS = 'online' | 'offline' | 'busy' | 'away';
-
-type USERS = {
-  [username: string]: {
-    username: string,
-    socket: Socket
-  }
-  // TODO: more things
-}
+import { user } from '@classes';
 
 type USER = {
+  guid: string,
   username: string,
-  socket: Socket
+  name: string,
+  socket_id: string
 }
 
-
-type PIPELINE = Array<{
-  id: string,
-  sockets: Array<Socket>,
-  owner: string,
-  admins: Array<string>
-}>
-
-type PIPELINE_OBJ = {
-  id: string,
-  sockets: Array<Socket>,
-  owner: string,
-  admins: Array<string>
+type USERS = {
+  [guid: string]: USER
 }
 
 export {
   USERS,
-  USER,
-  PIPELINE,
-  PIPELINE_OBJ
+  USER
 }

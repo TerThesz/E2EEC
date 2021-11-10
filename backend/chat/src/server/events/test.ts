@@ -1,15 +1,13 @@
-import { USERS } from "@config/types";
+import { USER, USERS } from "@config/types";
 import { EventInterface } from "server/interfaces";
 import { Socket } from "socket.io";
-import { DefaultEventsMap } from "socket.io/dist/typed-events";
 
-export = {
+const test: EventInterface = {
   name: 'test',
 
-  handler(data: Buffer, cb: Function, socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap>, users: USERS, username: string): void {    
-    console.log(data);
-    socket.emit('test', {
-      message: 'test'
-    });
+  handler(data: Buffer, cb: Function, socket: Socket, users: USERS, user: USER): void {
+    socket.emit('chat-message', 'hello world!');
   }
-} as EventInterface;
+};
+
+export default test;

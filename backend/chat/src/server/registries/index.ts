@@ -1,4 +1,4 @@
-import event_registry from "./event_registry";
-import user_registry from "./user_registry";
+import EventRegistry from "./event_registry";
+import UserRegistry from "./user_registry";
 
-export { event_registry, user_registry };
+export { EventRegistry, UserRegistry };

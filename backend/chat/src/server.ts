@@ -1,22 +1,21 @@
 import * as io from 'socket.io';
-import status_codes from '@config/status_codes';
-import { event_registry, user_registry } from 'server/registries';
+import { User } from '@classes';
+import { USER } from '@config/types';
+import { EventRegistry } from 'server/registries';
 
 const server = new io.Server();
 
-// TODO: normalize(normalization... thing);
-
 server.on('connection', (socket) => {
   // Handle connection
-  const username = user_registry.onConnect(socket);
-  if (!username) return;
+  const user: USER | null = User.handleConnection(socket);
+  if (!user) return;
 
   // Load event handlers
-  event_registry.initializeEvents(socket, username);
+  EventRegistry.initializeEvents(socket, user);
 
   // Handle disconnection
-  socket.on('disconnect', () => user_registry.onDisconnect(socket, username));
-  socket.on('error', () => user_registry.onDisconnect(socket, username));
+  socket.on('disconnect', () => User.handleDisconnection(socket));
+  socket.on('error', () => User.handleDisconnection(socket));
 });
 
 server.listen(8080);
