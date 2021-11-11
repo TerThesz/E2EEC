@@ -1,9 +1,6 @@
-type USER = {
-  guid: string,
-  username: string,
-  name: string,
-  socket_id: string
-}
+import { User } from "server/classes"
+
+type USER = User;
 
 type USERS = {
   [guid: string]: USER
@@ -26,3 +23,4 @@ export {
   HEADERS,
   DATA,
   REQUEST
+}

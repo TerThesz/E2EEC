@@ -9,12 +9,24 @@ export default class User implements USER {
   readonly username: string;
   readonly name: string;
   readonly socket_id: string;
+  unseen_messages: string[];
 
-  protected constructor(guid: string, username: string, name: string, socket_id: string) {
+  protected constructor(guid: string, username: string, name: string, socket_id: string, unseen_messages: string[]) {
     this.guid = guid;
     this.username = username;
     this.name = name;
     this.socket_id = socket_id;
+    this.unseen_messages = unseen_messages;
+  }
+
+  add_unseen_message(username: string) {
+    if (!this.unseen_messages.includes(username))
+      this.unseen_messages.push(username);
+  }
+
+  remove_unseen_message(username: string) {
+    if (this.unseen_messages.includes(username))
+      this.unseen_messages.splice(this.unseen_messages.indexOf(username), 1);
   }
 
   static handleConnection(socket: Socket): User | null {
@@ -30,14 +42,14 @@ export default class User implements USER {
 
     // TODO: client validation
 
-    const user_instance = new User(guid, username, name, socket_id);
+    const user_instance = new User(guid, username, name, socket_id, []);
 
     if (UserRegistry.has(guid)) {
       PreEventError(socket, status_codes.MULTIPLE_SESSIONS)
       return null;
     }
 
-    UserRegistry.add(username, name, guid, socket_id);
+    UserRegistry.add(user_instance);
 
     console.log(`${username} has connected`);
 
@@ -46,7 +58,7 @@ export default class User implements USER {
 
   static handleDisconnection(socket: Socket): void {
     let user;
-    const guid = UserRegistry.get_guid(socket.id);
+    const guid = UserRegistry.get_by_socket_id(socket.id)?.guid;
     if (guid) {
       user = UserRegistry.get(guid);
       if (user)

@@ -1,15 +1,11 @@
 import { USERS, USER } from '@config/types';
+import { User } from 'server/classes';
 
 export default new class UserRegistry {
   readonly users: USERS = {};
 
-  public add(username: string, name: string, guid: string, socket_id: string): void {
-    this.users[guid] = { 
-      username,
-      name,
-      guid,
-      socket_id
-    };
+  public add(user: User): void {
+    this.users[user.guid] = user;
   }
 
   public remove(guid: string): void {
@@ -33,10 +29,10 @@ export default new class UserRegistry {
     return this.users[guid] !== undefined;
   }
 
-  public get_guid(socket_id: string): string | null {
+  public get_by_socket_id(socket_id: string): USER | null {
     for (const guid in this.users) {
       if (this.users[guid].socket_id === socket_id) {
-        return this.users[guid].guid;
+        return this.users[guid];
       }
     }
     return null;
