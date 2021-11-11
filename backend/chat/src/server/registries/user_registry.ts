@@ -20,6 +20,15 @@ export default new class UserRegistry {
     return this.users[guid];
   }
 
+  public get_by_name(name: string): USER | null {
+    for (const guid in this.users) {
+      if (this.users[guid].name === name) {
+        return this.users[guid];
+      }
+    }
+    return null;
+  }
+
   public has(guid: string): boolean {
     return this.users[guid] !== undefined;
   }

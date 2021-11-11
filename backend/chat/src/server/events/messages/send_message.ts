@@ -5,12 +5,14 @@ import { Socket } from "socket.io";
 
 const send_message: EventInterface = {
   name: 'send message',
-  data_types: [ 'JSON', 'string' ],
+  data_types: 'string',
 
   middleware: RequestTypeMiddleware,
 
   handler(request: REQUEST, cb: Function, socket: Socket, users: USERS, user: USER): void {
-    console.log(request);
+    const { headers, data } = request;
+
+    
   }
 };
 

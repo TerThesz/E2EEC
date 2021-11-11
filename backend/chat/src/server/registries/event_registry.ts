@@ -1,6 +1,6 @@
 import { sync } from 'glob';
 import { resolve } from 'path';
-import { REQUEST, USER, USERS } from '@config/types';
+import { REQUEST, USER } from '@config/types';
 import { Socket } from 'socket.io';
 import { UserRegistry } from './';
 import { ParseRequestMiddleware } from 'server/middleware';
