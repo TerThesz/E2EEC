@@ -18,13 +18,13 @@ const send_message: EventInterface = {
 
     const { sent_at, sent_to } = headers;
 
-    if (!sent_to || !sent_at) return eventError(status_codes.BAD_DATA_FORMAT, socket, cb);
+    if (!sent_to || !sent_at) return eventError(socket, status_codes.BAD_DATA_FORMAT, cb);
 
     const target = UserRegistry.get_by_name(sent_to.toLowerCase());
     const sender = UserRegistry.get_by_socket_id(socket.id);
     if (!sender) return;
 
-    if (!target) return eventError(status_codes.TARGET_NOT_FOUND, socket, cb);
+    if (!target) return eventError(socket, status_codes.TARGET_NOT_FOUND, cb);
 
     const message = {
       headers: {
@@ -34,18 +34,22 @@ const send_message: EventInterface = {
       data
     };
 
-    if (sender.unseen_messages.includes(target.username)) {
-      sender.remove_unseen_message(target.username);
+    if (sender.unread_messages.includes(target.username)) {
+      sender.remove_unread_message(target.username);
       server.sockets.sockets.get(target.socket_id)?.emit('chat seen', sender.username);
     }
 
     server.sockets.sockets.get(target.socket_id)?.emit('chat message', message, callbackTimeout(3 * 1000, (response: any) => {
+      // TODO: opened_chat ->
+      //          true: seen
+      //          false: received
+      
       if (response instanceof Error) {
-        target.add_unseen_message(sender.username);
+        target.add_unread_message(sender.username);
         return;
       }
 
-      target.remove_unseen_message(sender.username);
+      target.remove_unread_message(sender.username);
       
       server.sockets.sockets.get(sender.socket_id)?.emit('chat seen', target.username);
     }));

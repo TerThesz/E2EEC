@@ -1,6 +1,6 @@
 import { Socket } from "socket.io";
 
-export default function eventError(message: (number | string)[], socket: Socket, cb: Function) {
+export default function eventError(socket: Socket, message: (number | string)[], cb: Function) {
   socket.emit('chat error', message);
   cb(false);
 }

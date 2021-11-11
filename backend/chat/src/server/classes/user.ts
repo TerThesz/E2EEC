@@ -9,24 +9,24 @@ export default class User implements USER {
   readonly username: string;
   readonly name: string;
   readonly socket_id: string;
-  unseen_messages: string[];
+  unread_messages: string[];
 
-  protected constructor(guid: string, username: string, name: string, socket_id: string, unseen_messages: string[]) {
+  protected constructor(guid: string, username: string, name: string, socket_id: string, unread_messages: string[]) {
     this.guid = guid;
     this.username = username;
     this.name = name;
     this.socket_id = socket_id;
-    this.unseen_messages = unseen_messages;
+    this.unread_messages = unread_messages;
   }
 
-  add_unseen_message(username: string) {
-    if (!this.unseen_messages.includes(username))
-      this.unseen_messages.push(username);
+  add_unread_message(username: string) {
+    if (!this.unread_messages.includes(username))
+      this.unread_messages.push(username);
   }
 
-  remove_unseen_message(username: string) {
-    if (this.unseen_messages.includes(username))
-      this.unseen_messages.splice(this.unseen_messages.indexOf(username), 1);
+  remove_unread_message(username: string) {
+    if (this.unread_messages.includes(username))
+      this.unread_messages.splice(this.unread_messages.indexOf(username), 1);
   }
 
   static handleConnection(socket: Socket): User | null {
