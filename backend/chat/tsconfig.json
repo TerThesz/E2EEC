@@ -28,6 +28,7 @@
       "@classes": ["server/classes/"],
       "@interfaces": ["server/interfaces/"],
       "@utils": ["server/utils/"],
+      "@middleware": ["server/middleware/"],
     }
   },
   "exclude": ["node_modules"],

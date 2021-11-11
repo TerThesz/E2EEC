@@ -25,6 +25,15 @@ export default new class EventRegistry {
       this.add(event);
 
       socket.on(event.name, (data: Buffer, cb: Function) => {
+        const { middleware } = event;
+        if (middleware) {
+          if (Array.isArray(middleware))
+            middleware.forEach((middleware) => 
+              middleware(data, cb, socket, UserRegistry.users, user));
+          else if (typeof middleware === 'function')
+            middleware(data, cb, socket, UserRegistry.users, user);
+        }
+
         event.handler(data, cb, socket, UserRegistry.users, user);
       });
     });
