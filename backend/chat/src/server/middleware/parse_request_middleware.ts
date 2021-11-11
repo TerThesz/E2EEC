@@ -16,7 +16,7 @@ const ParseRequestMiddleware = (buffer: Buffer, socket: Socket): REQUEST | null 
   }
 
   const { headers, data } = (buffer as { [key: string]: any });
-  if (!headers || !data) {
+  if (!headers) {
     socket.emit('chat error', status_codes.BAD_REQUEST_FORMAT);
     return null;
   }

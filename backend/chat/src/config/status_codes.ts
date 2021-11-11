@@ -11,4 +11,5 @@ export default new class status_codes {
   BAD_REQUEST_TYPE = [ 6, 'Bad request type']
   BAD_REQUEST_FORMAT = [ 7, 'Bad request format' ];
   BAD_DATA_FORMAT = [ 8, 'Bad data format' ];
+  TOO_MANY_CALLS = [ 9, 'Too many calls' ];
 }

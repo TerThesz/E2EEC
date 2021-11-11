@@ -11,6 +11,10 @@ const RequestTypeMiddleware: MiddlewareInterface = {
     const { data } = request;
 
     if (!data_types) return true;
+    if (!data) {
+      socket.emit('chat error', status_codes.BAD_REQUEST_FORMAT);
+      return false;
+    }
 
     let found_match = false;
 

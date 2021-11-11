@@ -1,5 +1,6 @@
 import status_codes from '@config/status_codes';
 import { USER } from '@config/types';
+import server from '@server';
 import { UserRegistry } from 'server/registries';
 import { GenerateGuid, PreEventError } from 'server/utils';
 import { Socket } from 'socket.io';
@@ -53,6 +54,11 @@ export default class User implements USER {
 
     console.log(`${username} has connected`);
 
+    server.cooldown_information[socket.id] = {
+      last_call: 0,
+      events_over_threshold: 0
+    }
+
     return user_instance;
   }
 
@@ -64,6 +70,8 @@ export default class User implements USER {
       if (user)
         UserRegistry.remove(guid);
     }
+
+    delete server.cooldown_information[socket.id];
 
     console.log(`${user?.username} has disconnected`);
   }

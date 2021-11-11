@@ -17,10 +17,18 @@ type REQUEST = {
   data: DATA
 }
 
+type COOLDOWNS = {
+  [key: string]: {
+    last_call: number,
+    events_over_threshold: number
+  }
+}
+
 export {
   USERS,
   USER,
   HEADERS,
   DATA,
-  REQUEST
+  REQUEST,
+  COOLDOWNS
 }

@@ -3,9 +3,11 @@ import { resolve } from 'path';
 import { REQUEST, USER } from '@config/types';
 import { Socket } from 'socket.io';
 import { UserRegistry } from './';
-import { ParseRequestMiddleware } from 'server/middleware';
+import { cooldownMiddleware, ParseRequestMiddleware } from 'server/middleware';
 
 const files = sync(resolve(`./src/server/events/**/*.ts`));
+
+const default_middleware = [ cooldownMiddleware ];
 
 export default new class EventRegistry {
   readonly events: Array<any> = new Array<any>();
@@ -29,6 +31,8 @@ export default new class EventRegistry {
         let { middleware } = event;
         let result: boolean = false;
 
+        if (!cb) cb = () => {};
+
         const parsedRequest: REQUEST | null = ParseRequestMiddleware(buffer, socket);
         if (!parsedRequest) return;
 
@@ -51,6 +55,8 @@ export default new class EventRegistry {
 
           if (!Array.isArray(middleware))
             middleware = [ middleware ];
+
+          default_middleware.forEach((mdw: any) => mdw(socket));
 
           middleware.forEach(runMiddleware);
         }

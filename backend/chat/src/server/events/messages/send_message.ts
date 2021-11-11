@@ -54,7 +54,7 @@ const send_message: EventInterface = {
       server.sockets.sockets.get(sender.socket_id)?.emit('chat seen', target.username);
     }));
 
-    // Other shenanigans
+    cb(true);
   }
 };
 
