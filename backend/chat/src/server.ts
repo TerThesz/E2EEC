@@ -5,6 +5,8 @@ import { EventRegistry } from 'server/registries';
 
 const server = new io.Server();
 
+// TODO: Redo naming (AND MAKE IT CONSISTENT)
+
 server.on('connection', (socket) => {
   // Handle connection
   const user: USER | null = User.handleConnection(socket);
