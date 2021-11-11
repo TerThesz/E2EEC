@@ -1,4 +1,4 @@
-import { USER, USERS } from "@config/types";
+import { REQUEST, USER, USERS } from "@config/types";
 import { Socket } from "socket.io";
 
 export default interface EventInterface {
@@ -7,5 +7,5 @@ export default interface EventInterface {
 
   middleware?: Object | Array<Object>;
 
-  handler(data: any, cb: Function, socket: Socket, users: USERS, user: USER): void;
+  handler(request: REQUEST, cb: Function, socket: Socket, users: USERS, user: USER): void;
 }

@@ -9,7 +9,20 @@ type USERS = {
   [guid: string]: USER
 }
 
+type HEADERS = {
+  [key: string]: string
+}
+
+type DATA = any
+
+type REQUEST = {
+  headers: HEADERS,
+  data: DATA
+}
+
 export {
   USERS,
-  USER
-}
+  USER,
+  HEADERS,
+  DATA,
+  REQUEST

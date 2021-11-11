@@ -1,9 +1,9 @@
 import { sync } from 'glob';
 import { resolve } from 'path';
-import { USER, USERS } from '@config/types';
+import { REQUEST, USER, USERS } from '@config/types';
 import { Socket } from 'socket.io';
 import { UserRegistry } from './';
-import { MiddlewareInterface } from 'server/interfaces';
+import { ParseRequestMiddleware } from 'server/middleware';
 
 const files = sync(resolve(`./src/server/events/**/*.ts`));
 
@@ -25,9 +25,12 @@ export default new class EventRegistry {
       const event = require(file).default;
       this.add(event);
 
-      socket.on(event.name, (data: Buffer, cb: Function) => {
+      socket.on(event.name, (buffer: Buffer, cb: Function) => {
         let { middleware } = event;
         let result: boolean = false;
+
+        const parsedRequest: REQUEST | null = ParseRequestMiddleware(buffer, socket);
+        if (!parsedRequest) return;
 
         if (middleware) {
           function runMiddleware(mdw: any) {
@@ -43,7 +46,7 @@ export default new class EventRegistry {
               });
             }
 
-            if (typeof middleware === 'object') result = mdw.run(data, socket, UserRegistry.users, user, matched_values);
+            if (typeof middleware === 'object') result = mdw.run(parsedRequest, socket, UserRegistry.users, user, matched_values);
           }
 
           if (!Array.isArray(middleware))
@@ -57,7 +60,7 @@ export default new class EventRegistry {
           return;
         }
 
-        event.handler(data, cb, socket, UserRegistry.users, user);
+        event.handler(parsedRequest, cb, socket, UserRegistry.users, user);
       });
     });
   }

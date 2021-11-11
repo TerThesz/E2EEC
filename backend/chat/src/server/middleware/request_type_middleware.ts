@@ -1,13 +1,14 @@
 import status_codes from "@config/status_codes";
-import { USER, USERS } from "@config/types";
+import { REQUEST, USER, USERS } from "@config/types";
 import { MiddlewareInterface } from "server/interfaces";
 import { Socket } from "socket.io";
 
 const RequestTypeMiddleware: MiddlewareInterface = {
   values: 'data_types',
 
-  run(data: any, socket: Socket, users: USERS, user: USER, values: { [key: string]: any }): boolean {
+  run(request: REQUEST, socket: Socket, users: USERS, user: USER, values: { [key: string]: any }): boolean {
     const { data_types } = values;
+    const { data } = request;
 
     if (!data_types) return true;
 
@@ -37,7 +38,7 @@ const RequestTypeMiddleware: MiddlewareInterface = {
       findMatch(data_types);
 
     if (!found_match)
-      socket.emit('chat error', status_codes.INVALID_REQUEST_TYPE)
+      socket.emit('chat error', status_codes.BAD_DATA_TYPE)
 
     return found_match;
   }
