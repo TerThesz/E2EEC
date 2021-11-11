@@ -29,6 +29,7 @@
       "@interfaces": ["server/interfaces/"],
       "@utils": ["server/utils/"],
       "@middleware": ["server/middleware/"],
+      "@server": ["./server"],
     }
   },
   "exclude": ["node_modules"],

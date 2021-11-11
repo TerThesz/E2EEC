@@ -20,3 +20,7 @@ server.on('connection', (socket) => {
 
 server.listen(8080);
 console.log('🏃 on port 8080.');
+
+export default {
+  sockets: server.sockets
+}
