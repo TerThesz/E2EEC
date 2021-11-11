@@ -26,27 +26,30 @@ export default new class EventRegistry {
       this.add(event);
 
       socket.on(event.name, (data: Buffer, cb: Function) => {
-        const { middleware } = event;
+        let { middleware } = event;
         let result: boolean = false;
 
         if (middleware) {
-          let { values } = middleware;
-          let matched_values: { [key: string]: any } = {};
+          function runMiddleware(mdw: any) {
+            let { values } = mdw;
+            let matched_values: { [key: string]: any } = {};
 
-          if (values) {
-            if (!Array.isArray(values)) 
-              values = [ values ];
+            if (values) {
+              if (!Array.isArray(values)) 
+                values = [ values ];
 
-            values.forEach((value: any) => {
-              matched_values[value] = event[value];
-            });
+              values.forEach((value: any) => {
+                matched_values[value] = event[value];
+              });
+            }
+
+            if (typeof middleware === 'object') result = mdw.run(data, socket, UserRegistry.users, user, matched_values);
           }
 
-          const call_middleware = (mdw: any) => result = mdw.run(data, socket, UserRegistry.users, user, matched_values);
+          if (!Array.isArray(middleware))
+            middleware = [ middleware ];
 
-          if (Array.isArray(middleware))
-            middleware.forEach(call_middleware);
-          else if (typeof middleware === 'object') call_middleware(middleware);
+          middleware.forEach(runMiddleware);
         }
 
         if (!result) {
