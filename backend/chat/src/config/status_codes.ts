@@ -7,4 +7,5 @@ export default new class status_codes {
   TARGET_NOT_FOUND = [ 2, 'Target user could not be found' ];
   TARGET_SELF = [ 3, 'You cannot send messages to yourself' ];
   NO_USERNAME = [ 4, 'No username provided' ];
+  INVALID_REQUEST_TYPE = [ 5, 'Invalid request type' ];
 }

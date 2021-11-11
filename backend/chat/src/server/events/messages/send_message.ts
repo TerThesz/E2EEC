@@ -5,7 +5,7 @@ import { Socket } from "socket.io";
 
 const send_message: EventInterface = {
   name: 'send message',
-  data_types: typeof JSON,
+  data_types: 'JSON',
 
   middleware: RequestTypeMiddleware,
 

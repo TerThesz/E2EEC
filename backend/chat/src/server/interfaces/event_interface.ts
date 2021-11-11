@@ -1,11 +1,11 @@
 import { USER, USERS } from "@config/types";
 import { Socket } from "socket.io";
 
-interface _EventInterface {
+export default interface EventInterface {
   name: string;
   data_types: string;
 
-  middleware?: Function | Array<Function>;
+  middleware?: Object | Array<Object>;
 
   handler(data: any, cb: Function, socket: Socket, users: USERS, user: USER): void;
 }

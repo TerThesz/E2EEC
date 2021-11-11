@@ -1,6 +1,3 @@
-import { Socket } from 'socket.io';
-import { user } from '@classes';
-
 type USER = {
   guid: string,
   username: string,
