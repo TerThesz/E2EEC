@@ -14,6 +14,11 @@ const RequestTypeMiddleware: MiddlewareInterface = {
     let found_match = false;
 
     function findMatch(value: string) {
+      if (typeof data === value) {
+        found_match = true;
+        return;
+      }
+
       switch(value) {
         case 'JSON':
           if (typeof data === 'object') {
@@ -26,8 +31,8 @@ const RequestTypeMiddleware: MiddlewareInterface = {
       }
     }
 
-    if (Array.isArray(data))
-      data.forEach(findMatch);
+    if (Array.isArray(data_types))
+      data_types.forEach(findMatch);
     else
       findMatch(data_types);
 
