@@ -16,10 +16,12 @@ const RequestTypeMiddleware: MiddlewareInterface = {
     function findMatch(value: string) {
       switch(value) {
         case 'JSON':
-          try {
-            JSON.parse(JSON.stringify(data));
-            found_match = true;
-          } catch (e) {}
+          if (typeof data === 'object') {
+            try {
+              JSON.parse(JSON.stringify(data));
+              found_match = true;
+            } catch (e) {}
+          }
         // Will add more cases when needed
       }
     }

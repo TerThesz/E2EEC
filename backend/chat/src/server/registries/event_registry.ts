@@ -35,7 +35,7 @@ export default new class EventRegistry {
 
           if (values) {
             if (!Array.isArray(values)) 
-              values = [values];
+              values = [ values ];
 
             values.forEach((value: any) => {
               matched_values[value] = event[value];
