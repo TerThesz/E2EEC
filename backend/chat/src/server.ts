@@ -31,8 +31,6 @@ server.on('connection', (socket) => {
   socket.emit('connected');
 });
 
-// TODO: generate custom ids for messages instead of using a timestamp
-
 server.listen(8080);
 console.log('🏃 on port 8080.');
 

@@ -4,7 +4,7 @@ import { request_type_middleware } from "server/middleware";
 import { Socket } from "socket.io";
 import server from '@server';
 import status_codes from "@config/status_codes";
-import { callbackTimeout, eventError } from "server/utils";
+import { callbackTimeout, eventError, generateUUID } from "server/utils";
 
 const send_message: EventInterface = {
   name: 'send message',
@@ -15,26 +15,37 @@ const send_message: EventInterface = {
   handler(request: REQUEST, cb: Function, socket: Socket, users: USER_REGISTRY, sender: USER): void {
     const { headers, data } = request;
 
-    const { sent_at, sent_to, response } = headers;
+    const { sent_to, response } = headers;
 
-    if (!sent_to || !sent_at) return eventError(socket, status_codes.BAD_DATA_FORMAT, cb);
+    if (!sent_to || !data) return eventError(socket, status_codes.BAD_DATA_FORMAT, cb);
 
     const target = users.get_by_name(sent_to.toLowerCase());
 
     if (!target) return eventError(socket, status_codes.TARGET_NOT_FOUND, cb);
 
+    let message_id = '';
+    if (data.length > 10) {
+      message_id = generateUUID(data.substring(0, 10));
+    } else {
+      let random_letters = '';
+      for (let i = 0; i < 10 - data.length; i++) {
+        random_letters += String.fromCharCode(Math.floor(Math.random() * 26) + 97);
+      }
+      message_id = generateUUID(data + random_letters);
+    }
+
     const message = 
     response ? {
       headers: {
         sent_by: sender.username,
-        sent_at,
+        id: message_id,
         response
       },
       data
     } : {
       headers: {
         sent_by: sender.username,
-        sent_at
+        id: message_id
       },
       data
     };
@@ -61,7 +72,7 @@ const send_message: EventInterface = {
       }
     }));
 
-    cb(true);
+    cb(true, message_id);
   }
 };
 
