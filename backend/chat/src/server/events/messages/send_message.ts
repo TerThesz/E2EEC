@@ -1,6 +1,6 @@
 import { REQUEST, USER, USERS } from "@config/types";
 import { EventInterface } from "server/interfaces";
-import { RequestTypeMiddleware } from "server/middleware";
+import { request_type_middleware } from "server/middleware";
 import { UserRegistry } from "server/registries";
 import { Socket } from "socket.io";
 import server from '@server';
@@ -11,7 +11,7 @@ const send_message: EventInterface = {
   name: 'send message',
   data_types: 'string',
 
-  middleware: RequestTypeMiddleware,
+  middleware: request_type_middleware,
 
   handler(request: REQUEST, cb: Function, socket: Socket, users: USERS, user: USER): void {
     const { headers, data } = request;

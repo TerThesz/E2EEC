@@ -3,7 +3,7 @@ import { REQUEST, USER, USERS } from "@config/types";
 import { MiddlewareInterface } from "server/interfaces";
 import { Socket } from "socket.io";
 
-const RequestTypeMiddleware: MiddlewareInterface = {
+const request_type_middleware: MiddlewareInterface = {
   values: 'data_types',
 
   run(request: REQUEST, socket: Socket, users: USERS, user: USER, values: { [key: string]: any }): boolean {
@@ -48,4 +48,4 @@ const RequestTypeMiddleware: MiddlewareInterface = {
   }
 }
 
-export default RequestTypeMiddleware;
+export default request_type_middleware;

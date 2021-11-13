@@ -2,7 +2,7 @@ import status_codes from '@config/status_codes';
 import { USER } from '@config/types';
 import server from '@server';
 import { UserRegistry } from 'server/registries';
-import { GenerateGuid, PreEventError } from 'server/utils';
+import { generateUUID, preEventError } from 'server/utils';
 import { Socket } from 'socket.io';
 
 export default class User implements USER {
@@ -33,12 +33,12 @@ export default class User implements USER {
   static handleConnection(socket: Socket): User | null {
     const username = socket.handshake.query.username?.toString().normalize('NFC');
     if (!username) {
-      PreEventError(socket, status_codes.NO_USERNAME)
+      preEventError(socket, status_codes.NO_USERNAME)
       return null;
     };
 
     const name = username.toLowerCase();
-    const guid = GenerateGuid(username);
+    const guid = generateUUID(username);
     const socket_id = socket.id;
 
     // TODO: client validation
@@ -46,7 +46,7 @@ export default class User implements USER {
     const user_instance = new User(guid, username, name, socket_id, []);
 
     if (UserRegistry.has(guid)) {
-      PreEventError(socket, status_codes.MULTIPLE_SESSIONS)
+      preEventError(socket, status_codes.MULTIPLE_SESSIONS)
       return null;
     }
 

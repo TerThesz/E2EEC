@@ -1,4 +1,4 @@
-export default new class status_codes {
+export default new class StatusCodes {
   // Success
   SESSION_INITIALIZED = [ 100, 'Session successfully initialized' ];
 

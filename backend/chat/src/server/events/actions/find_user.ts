@@ -2,16 +2,16 @@ import status_codes from "@config/status_codes";
 import { REQUEST, USER, USERS } from "@config/types";
 import server from "@server";
 import { EventInterface } from "server/interfaces";
-import { RequestTypeMiddleware } from "server/middleware";
+import { request_type_middleware } from "server/middleware";
 import { eventError } from "server/utils";
 import { Socket } from "socket.io";
 
-const seen_messages: EventInterface = {
+const find_user: EventInterface = {
   name: 'find user',
 
   data_types: 'string',
 
-  middleware: RequestTypeMiddleware,
+  middleware: request_type_middleware,
 
   handler(request: REQUEST, cb: Function, socket: Socket, users: USERS, user: USER): void {
     const data = request.data;
@@ -91,4 +91,4 @@ const seen_messages: EventInterface = {
   }
 };
 
-export default seen_messages; 
+export default find_user; 

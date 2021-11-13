@@ -3,7 +3,7 @@ import { resolve } from 'path';
 import { REQUEST, USER } from '@config/types';
 import { Socket } from 'socket.io';
 import { UserRegistry } from './';
-import { cooldownMiddleware, ParseRequestMiddleware } from 'server/middleware';
+import { cooldownMiddleware, parseRequestMiddleware } from 'server/middleware';
 
 const files = sync(resolve(`./src/server/events/**/*.ts`));
 
@@ -33,7 +33,7 @@ export default new class EventRegistry {
 
         if (!cb) cb = () => {};
 
-        const parsedRequest: REQUEST | null = ParseRequestMiddleware(buffer, socket);
+        const parsedRequest: REQUEST | null = parseRequestMiddleware(buffer, socket);
         if (!parsedRequest) return;
 
         if (middleware) {

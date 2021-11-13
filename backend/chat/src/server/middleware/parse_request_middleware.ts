@@ -2,7 +2,7 @@ import status_codes from "@config/status_codes";
 import { REQUEST } from "@config/types";
 import { Socket } from "socket.io";
 
-const ParseRequestMiddleware = (buffer: Buffer, socket: Socket): REQUEST | null => {
+const parseRequestMiddleware = (buffer: Buffer, socket: Socket): REQUEST | null => {
   if (typeof buffer === 'object') {
     try {
       JSON.parse(JSON.stringify(buffer));
@@ -24,4 +24,4 @@ const ParseRequestMiddleware = (buffer: Buffer, socket: Socket): REQUEST | null 
   return { headers, data };
 }
 
-export default ParseRequestMiddleware;
+export default parseRequestMiddleware;

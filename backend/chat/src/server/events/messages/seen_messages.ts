@@ -2,7 +2,6 @@ import status_codes from "@config/status_codes";
 import { REQUEST, USER, USERS } from "@config/types";
 import server from "@server";
 import { EventInterface } from "server/interfaces";
-import { RequestTypeMiddleware } from "server/middleware";
 import { UserRegistry } from "server/registries";
 import { eventError } from "server/utils";
 import { Socket } from "socket.io";

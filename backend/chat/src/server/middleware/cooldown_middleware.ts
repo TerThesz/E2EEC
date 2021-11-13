@@ -4,7 +4,7 @@ import { Socket } from "socket.io";
 
 const cooldowns: string[] = [];
 
-const CooldownMiddleware = (socket: Socket) => {
+const cooldownMiddleware = (socket: Socket) => {
   const cooldown_info = server.cooldown_information[socket.id];
   if (!cooldown_info || cooldowns.includes(socket.handshake.address.toString())) {
     socket.disconnect();
@@ -28,4 +28,4 @@ const CooldownMiddleware = (socket: Socket) => {
   }
 }
 
-export default CooldownMiddleware;
+export default cooldownMiddleware;

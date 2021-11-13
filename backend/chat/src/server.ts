@@ -13,7 +13,6 @@ const threshold_clears_after = process.env.THRESHOLD_CLEARS_AFTER || 10 * 1000;
 
 const cooldown_information: COOLDOWNS = {};
 
-// TODO: Redo naming (AND MAKE IT CONSISTENT)
 // TODO: Rename client events
 
 server.on('connection', (socket) => {
