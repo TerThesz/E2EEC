@@ -9,15 +9,14 @@ const respond_to_messages: EventInterface = {
   name: 'respond to message',
 
   handler(request: REQUEST, cb: Function, socket: Socket, users: USER_REGISTRY, sender: USER): void {
-    const { target, message } = request.headers;
-    if (!target || !message) return eventError(socket, status_codes.BAD_DATA_FORMAT, cb);
-
+    const { target, message, content } = request.headers;
+    if (!target || !message || !content) return eventError(socket, status_codes.BAD_DATA_FORMAT, cb);
 
     const target_user = users.get_by_name(target.toLowerCase());
 
     if (!target_user) return eventError(socket, status_codes.TARGET_NOT_FOUND, cb);
 
-    server.sockets.sockets.get(target_user.socket_id)?.emit('respond', { sender: sender.username, message });
+    server.sockets.sockets.get(target_user.socket_id)?.emit('respond', { sender: sender.username, message, content });
   
     cb(true);
   }
