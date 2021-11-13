@@ -1,6 +1,24 @@
+import os from 'os';
 import crypto from 'crypto';
 
 export default function generateUUID(username: string): string {
-  const guid = crypto.createHash('sha1').update(username).digest('hex');
-  return guid.substring(0, 8) + '-' + guid.substring(8, 12) + '-' + guid.substring(12, 16) + '-' + guid.substring(16, 20) + '-' + guid.substring(20);
+  let uuid, ip;
+  
+  Object.keys(os.networkInterfaces()).forEach((key) => {
+    os.networkInterfaces()[key]?.forEach((address) => {
+      if (address.family === 'IPv4' && !address.internal) {
+        ip = address.address;
+      }
+    });
+  });
+
+  if (!ip) {
+    throw new Error('Could not get ip address of host machine');
+  }
+
+  uuid = crypto.createHash('sha1').update(`${username}${ip}${new Date().getTime()}${Math.floor(Math.random() * 100000)}`).digest('hex');
+
+  uuid = uuid.slice(0, 8) + '-' + uuid.slice(8, 12) + '-' + uuid.slice(12, 16) + '-' + uuid.slice(16, 20) + '-' + uuid.slice(20, 32);
+
+  return uuid;
 }
