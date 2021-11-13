@@ -1,10 +1,6 @@
 // code from https://github.com/jakubknejzlik/node-timeout-callback/blob/master/index.js
 
-const defaultOptions = {
-  isolateFirstArgForTimeoutError: true,
-};
-
-export default function callbackTimeout(timeout: any, callback?: any, options?: any) {
+export default function callbackTimeout(timeout: any, callback?: any, options: any = {}) {
   let called = false;
 
   // Check to see if it's actually an options object.
@@ -18,8 +14,6 @@ export default function callbackTimeout(timeout: any, callback?: any, options?: 
     callback = timeout;
     timeout = 10 * 1000;
   }
-
-  options = { ...defaultOptions, ...options };
 
   let interval = setTimeout(
     function() {

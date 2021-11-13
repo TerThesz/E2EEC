@@ -36,15 +36,15 @@ const send_message: EventInterface = {
       server.sockets.sockets.get(target.socket_id)?.emit('seen', sender.username);
     }
 
-    server.sockets.sockets.get(target.socket_id)?.emit('message', message, callbackTimeout(3 * 1000, (response: any) => {
-      if (response instanceof Error) {
+    server.sockets.sockets.get(target.socket_id)?.emit('message', message, callbackTimeout(3 * 1000, (status: any, response: any) => {
+      if (status instanceof Error) {
         target.add_unread_message(sender.username);
         return;
       }
 
-      if (typeof response !== 'boolean') return;
+      if (typeof status !== 'boolean' || !response) return;
 
-      if (response) {
+      if (status) {
         target.remove_unread_message(sender.username);
         server.sockets.sockets.get(sender.socket_id)?.emit('seen', target.username);
       } else {
