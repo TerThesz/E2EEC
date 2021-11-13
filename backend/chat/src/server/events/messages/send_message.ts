@@ -46,10 +46,10 @@ const send_message: EventInterface = {
 
       if (status) {
         target.remove_unread_message(sender.username);
-        server.sockets.sockets.get(sender.socket_id)?.emit('seen', target.username);
+        server.sockets.sockets.get(sender.socket_id)?.emit('seen', { target: target.username });
       } else {
         target.add_unread_message(sender.username);
-        server.sockets.sockets.get(sender.socket_id)?.emit('delivered', target.username);
+        server.sockets.sockets.get(sender.socket_id)?.emit('delivered', { target: target.username });
       }
     }));
 

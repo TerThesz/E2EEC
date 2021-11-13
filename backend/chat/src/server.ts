@@ -13,17 +13,21 @@ const threshold_clears_after = process.env.THRESHOLD_CLEARS_AFTER || 10 * 1000;
 
 const cooldown_information: COOLDOWNS = {};
 
+EventRegistry.initializeEvents();
+
 server.on('connection', (socket) => {
   // Handle connection
   const user: USER | null = User.handleConnection(socket);
   if (!user) return;
 
   // Load event handlers
-  EventRegistry.initializeEvents(socket, user);
+  EventRegistry.listenToEvents(socket, user);
 
   // Handle disconnection
   socket.on('disconnect', () => User.handleDisconnection(socket));
   socket.on('error', () => User.handleDisconnection(socket));
+
+  socket.emit('connected');
 });
 
 // TODO: generate custom ids for messages instead of using a timestamp

@@ -9,7 +9,9 @@ const respond_to_messages: EventInterface = {
   name: 'respond to message',
 
   handler(request: REQUEST, cb: Function, socket: Socket, users: USER_REGISTRY, sender: USER): void {
-    const { target, message, content } = request.headers;
+    const { target, message } = request.headers;
+    const content = request.data;
+
     if (!target || !message || !content) return eventError(socket, status_codes.BAD_DATA_FORMAT, cb);
 
     const target_user = users.get_by_name(target.toLowerCase());

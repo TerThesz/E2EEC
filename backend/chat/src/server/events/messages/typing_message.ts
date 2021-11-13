@@ -5,7 +5,7 @@ import { EventInterface } from "server/interfaces";
 import { eventError } from "server/utils";
 import { Socket } from "socket.io";
 
-const typing_messages: EventInterface = {
+const typing_message: EventInterface = {
   name: 'typing message',
 
   handler(request: REQUEST, cb: Function, socket: Socket, users: USER_REGISTRY, sender: USER): void {
@@ -20,4 +20,4 @@ const typing_messages: EventInterface = {
   }
 };
 
-export default typing_messages; 
+export default typing_message; 
