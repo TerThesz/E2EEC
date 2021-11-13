@@ -15,9 +15,9 @@ const send_message: EventInterface = {
   handler(request: REQUEST, cb: Function, socket: Socket, users: USER_REGISTRY, sender: USER): void {
     const { headers, data } = request;
 
-    const { sent_at, sent_to, response } = headers;
+    const { sent_to, response } = headers;
 
-    if (!sent_to || !sent_at) return eventError(socket, status_codes.BAD_DATA_FORMAT, cb);
+    if (!sent_to || !data) return eventError(socket, status_codes.BAD_DATA_FORMAT, cb);
 
     const target = users.get_by_name(sent_to.toLowerCase());
 
@@ -72,7 +72,7 @@ const send_message: EventInterface = {
       }
     }));
 
-    cb(true);
+    cb(true, message_id);
   }
 };
 
