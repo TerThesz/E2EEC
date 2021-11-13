@@ -9,7 +9,7 @@ const files = sync(resolve(`./src/server/events/**/*.ts`));
 
 const default_middleware = [ cooldownMiddleware ];
 
-export default new class EventRegistry {
+export default class EventRegistry {
   readonly events: Array<any> = new Array<any>();
 
   public add(event: any): void {
@@ -66,7 +66,7 @@ export default new class EventRegistry {
           return;
         }
 
-        event.handler(parsedRequest, cb, socket, UserRegistry.users, user);
+        event.handler(parsedRequest, cb, socket, UserRegistry, user);
       });
     });
   }

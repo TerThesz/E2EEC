@@ -1,7 +1,7 @@
 import { USERS, USER } from '@config/types';
 import { User } from 'server/classes';
 
-export default new class UserRegistry {
+export default class UserRegistry {
   readonly users: USERS = {};
 
   public add(user: User): void {

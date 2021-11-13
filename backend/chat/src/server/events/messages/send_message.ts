@@ -1,7 +1,6 @@
-import { REQUEST, USER, USERS } from "@config/types";
+import { REQUEST, USER, USERS, USER_REGISTRY } from "@config/types";
 import { EventInterface } from "server/interfaces";
 import { request_type_middleware } from "server/middleware";
-import { UserRegistry } from "server/registries";
 import { Socket } from "socket.io";
 import server from '@server';
 import status_codes from "@config/status_codes";
@@ -13,16 +12,14 @@ const send_message: EventInterface = {
 
   middleware: request_type_middleware,
 
-  handler(request: REQUEST, cb: Function, socket: Socket, users: USERS, user: USER): void {
+  handler(request: REQUEST, cb: Function, socket: Socket, users: USER_REGISTRY, sender: USER): void {
     const { headers, data } = request;
 
     const { sent_at, sent_to } = headers;
 
     if (!sent_to || !sent_at) return eventError(socket, status_codes.BAD_DATA_FORMAT, cb);
 
-    const target = UserRegistry.get_by_name(sent_to.toLowerCase());
-    const sender = UserRegistry.get_by_socket_id(socket.id);
-    if (!sender) return;
+    const target = users.get_by_name(sent_to.toLowerCase());
 
     if (!target) return eventError(socket, status_codes.TARGET_NOT_FOUND, cb);
 

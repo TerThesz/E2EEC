@@ -1,3 +1,4 @@
+import UserRegistry from "@registries/user_registry";
 import { User } from "server/classes"
 
 type USER = User;
@@ -24,11 +25,14 @@ type COOLDOWNS = {
   }
 }
 
+type USER_REGISTRY = UserRegistry;
+
 export {
   USERS,
   USER,
   HEADERS,
   DATA,
   REQUEST,
-  COOLDOWNS
+  COOLDOWNS,
+  USER_REGISTRY
 }

@@ -25,6 +25,7 @@
     "paths": {
       "@config/*": ["config/*"],
       "@registries": ["server/registries/"],
+      "@registries/*": ["server/registries/*"],
       "@classes": ["server/classes/"],
       "@interfaces": ["server/interfaces/"],
       "@utils": ["server/utils/"],

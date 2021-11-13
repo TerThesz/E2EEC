@@ -1,5 +1,5 @@
 import status_codes from "@config/status_codes";
-import { REQUEST, USER, USERS } from "@config/types";
+import { REQUEST, USER, USERS, USER_REGISTRY } from "@config/types";
 import server from "@server";
 import { EventInterface } from "server/interfaces";
 import { request_type_middleware } from "server/middleware";
@@ -13,15 +13,15 @@ const find_user: EventInterface = {
 
   middleware: request_type_middleware,
 
-  handler(request: REQUEST, cb: Function, socket: Socket, users: USERS, user: USER): void {
+  handler(request: REQUEST, cb: Function, socket: Socket, users: USER_REGISTRY, sender: USER): void {
     const data = request.data;
     if(!data) return eventError(socket, status_codes.BAD_DATA_FORMAT, cb);
 
     const usernames: string[] = [];
     const raw_usernames: Array<{ username: string, percentage: number }> = Array<{ username: string, percentage: number }>();
 
-    for (const guid in users) {
-      const username = users[guid].username;
+    for (const guid in users.users) {
+      const username = users.get(guid).username;
       const percentage = similarity(data, username);
   
       if (percentage > .3 && !raw_usernames.includes({username, percentage})) {
