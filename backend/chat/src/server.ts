@@ -13,8 +13,6 @@ const threshold_clears_after = process.env.THRESHOLD_CLEARS_AFTER || 10 * 1000;
 
 const cooldown_information: COOLDOWNS = {};
 
-// TODO: Rename client events
-
 server.on('connection', (socket) => {
   // Handle connection
   const user: USER | null = User.handleConnection(socket);

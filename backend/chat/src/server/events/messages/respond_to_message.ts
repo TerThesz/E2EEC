@@ -17,7 +17,7 @@ const respond_to_messages: EventInterface = {
 
     if (!target_user) return eventError(socket, status_codes.TARGET_NOT_FOUND, cb);
 
-    server.sockets.sockets.get(target_user.socket_id)?.emit('chat respond', { sender: sender.username, message });
+    server.sockets.sockets.get(target_user.socket_id)?.emit('respond', { sender: sender.username, message });
   
     cb(true);
   }

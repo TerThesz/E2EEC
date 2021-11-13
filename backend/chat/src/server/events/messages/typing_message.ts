@@ -16,7 +16,7 @@ const typing_messages: EventInterface = {
 
     if (!target_user) return eventError(socket, status_codes.TARGET_NOT_FOUND, cb);
 
-    server.sockets.sockets.get(target_user.socket_id)?.emit('chat typing', { sender: sender.username });
+    server.sockets.sockets.get(target_user.socket_id)?.emit('typing', { sender: sender.username });
   }
 };
 

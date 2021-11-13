@@ -18,7 +18,7 @@ const seen_messages: EventInterface = {
 
     sender.remove_unread_message(target.username);
 
-    server.sockets.sockets.get(target.socket_id)?.emit('chat seen', sender.username);
+    server.sockets.sockets.get(target.socket_id)?.emit('seen', sender.username);
   }
 };
 

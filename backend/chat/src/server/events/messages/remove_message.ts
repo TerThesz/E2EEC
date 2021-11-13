@@ -16,7 +16,7 @@ const remove_messages: EventInterface = {
 
     if (!target_user) return eventError(socket, status_codes.TARGET_NOT_FOUND, cb);
 
-    server.sockets.sockets.get(target_user.socket_id)?.emit('chat delete', { sender: sender.username, message });
+    server.sockets.sockets.get(target_user.socket_id)?.emit('delete', { sender: sender.username, message });
   
     cb(true);
   }

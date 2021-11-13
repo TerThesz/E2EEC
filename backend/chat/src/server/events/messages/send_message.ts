@@ -33,10 +33,10 @@ const send_message: EventInterface = {
 
     if (sender.unread_messages.includes(target.username)) {
       sender.remove_unread_message(target.username);
-      server.sockets.sockets.get(target.socket_id)?.emit('chat seen', sender.username);
+      server.sockets.sockets.get(target.socket_id)?.emit('seen', sender.username);
     }
 
-    server.sockets.sockets.get(target.socket_id)?.emit('chat message', message, callbackTimeout(3 * 1000, (response: any) => {
+    server.sockets.sockets.get(target.socket_id)?.emit('message', message, callbackTimeout(3 * 1000, (response: any) => {
       // TODO: opened_chat ->
       //          true: seen
       //          false: received
@@ -48,7 +48,7 @@ const send_message: EventInterface = {
 
       target.remove_unread_message(sender.username);
       
-      server.sockets.sockets.get(sender.socket_id)?.emit('chat seen', target.username);
+      server.sockets.sockets.get(sender.socket_id)?.emit('seen', target.username);
     }));
 
     cb(true);
