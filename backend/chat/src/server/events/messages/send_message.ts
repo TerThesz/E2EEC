@@ -15,7 +15,7 @@ const send_message: EventInterface = {
   handler(request: REQUEST, cb: Function, socket: Socket, users: USER_REGISTRY, sender: USER): void {
     const { headers, data } = request;
 
-    const { sent_at, sent_to } = headers;
+    const { sent_at, sent_to, response } = headers;
 
     if (!sent_to || !sent_at) return eventError(socket, status_codes.BAD_DATA_FORMAT, cb);
 
@@ -23,7 +23,15 @@ const send_message: EventInterface = {
 
     if (!target) return eventError(socket, status_codes.TARGET_NOT_FOUND, cb);
 
-    const message = {
+    const message = 
+    response ? {
+      headers: {
+        sent_by: sender.username,
+        sent_at,
+        response
+      },
+      data
+    } : {
       headers: {
         sent_by: sender.username,
         sent_at
@@ -41,9 +49,9 @@ const send_message: EventInterface = {
         target.add_unread_message(sender.username);
         return;
       }
-
+    
       if (typeof status !== 'boolean' || !response) return;
-
+    
       if (status) {
         target.remove_unread_message(sender.username);
         server.sockets.sockets.get(sender.socket_id)?.emit('seen', { target: target.username });
