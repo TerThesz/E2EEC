@@ -3,6 +3,7 @@ import { User } from '@classes';
 import { COOLDOWNS, USER } from '@config/types';
 import { EventRegistry } from 'server/registries';
 import { getHostIp } from 'server/utils';
+import local_server from 'server/local_server';
 
 const server = new io.Server();
 const host_ip = getHostIp();
@@ -30,7 +31,9 @@ server.on('connection', (socket) => {
 });
 
 server.listen(8080);
-console.log('🏃 on port 8080.');
+console.log('💬 🏃 on port 8080.');
+
+local_server();
 
 export default {
   sockets: server.sockets,

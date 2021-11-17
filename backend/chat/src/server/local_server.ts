@@ -26,12 +26,14 @@ local_server.on('connection', (socket) => {
   });
 });
 
-local_server.listen(8080);
-console.log('🏃 on port 8080.');
-
 function send_event_callback(status: boolean | Error) {
   if (status === true) return;
 
   // offline event handling
   console.log('💥 event failed to send.');
+}
+
+export default () => {
+  local_server.listen(8080);
+  console.log('💬🔒 🏃 on port 8080.');
 }
