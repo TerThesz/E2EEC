@@ -22,7 +22,7 @@ local_server.on('connection', (socket) => {
 
     if (!available_events.includes(event)) return eventError(socket, status_codes.EVENT_NOT_FOUND);
 
-    server.sockets.sockets.get(user.socket_id)?.emit(event, payload, callbackTimeout(3 * 1000, send_event_callback));
+    server.sockets.sockets.get(user.socket_id)?.emit(event.replace('_', ' '), payload, callbackTimeout(3 * 1000, send_event_callback));
   });
 });
 
