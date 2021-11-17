@@ -21,7 +21,6 @@ local_server.on('connection', (socket) => {
     let { event, payload, uuid } = data || {};
 
     if (!event || !payload || !uuid) return eventError(socket, status_codes.BAD_DATA_FORMAT, null, 'local error');
-    if (uuid === 'aaa') uuid = UserRegistry.get_by_name('bob')?.uuid;
 
     const user = UserRegistry.get(uuid);
     if (!user) return eventError(socket, status_codes.TARGET_NOT_FOUND);
