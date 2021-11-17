@@ -3,7 +3,7 @@ import { User } from '@classes';
 import { COOLDOWNS, USER } from '@config/types';
 import { EventRegistry } from 'server/registries';
 import { getHostIp } from 'server/utils';
-import local_server from 'server/local_server';
+import local_server from 'local_server';
 
 const server = new io.Server();
 const host_ip = getHostIp();

@@ -1,8 +1,8 @@
 import status_codes from '@config/status_codes';
 import server from '@server';
 import * as io from 'socket.io';
-import { UserRegistry } from './registries';
-import { callbackTimeout, eventError, preEventError } from './utils';
+import { UserRegistry } from './server/registries';
+import { callbackTimeout, eventError, preEventError } from './server/utils';
 import dotenv from 'dotenv';
 
 dotenv.config();
