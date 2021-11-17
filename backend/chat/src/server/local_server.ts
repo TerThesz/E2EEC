@@ -35,5 +35,5 @@ function send_event_callback(status: boolean | Error) {
 
 export default () => {
   local_server.listen(9090);
-  console.log('💬🔒 🏃 on port 8080.');
+  console.log('💬🔒 🏃 on port 9090.');
 }
