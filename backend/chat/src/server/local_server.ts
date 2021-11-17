@@ -33,4 +33,5 @@ function send_event_callback(status: boolean | Error) {
   if (status === true) return;
 
   // offline event handling
+  console.log('💥 event failed to send.');
 }
