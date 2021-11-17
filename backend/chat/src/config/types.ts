@@ -4,7 +4,7 @@ import { User } from "server/classes"
 type USER = User;
 
 type USERS = {
-  [guid: string]: USER
+  [uuid: string]: USER
 }
 
 type HEADERS = {

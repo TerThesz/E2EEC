@@ -20,8 +20,8 @@ const find_user: EventInterface = {
     const usernames: string[] = [];
     const raw_usernames: Array<{ username: string, percentage: number }> = Array<{ username: string, percentage: number }>();
 
-    for (const guid in users.users) {
-      const username = users.get(guid).username;
+    for (const uuid in users.users) {
+      const username = users.get(uuid).username;
       const percentage = similarity(data, username);
   
       if (percentage > .3 && !raw_usernames.includes({username, percentage})) {

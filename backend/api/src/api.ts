@@ -15,8 +15,6 @@ const
 
 require('dotenv').config();
 
-// cors settings.
-// I recommend editing this later
 app.use(cors());
 app.use((req: Request, res: any, next: NextFunction) => {
   res.header("Access-Control-Allow-Origin", req.header('Origin'));
@@ -26,7 +24,6 @@ app.use((req: Request, res: any, next: NextFunction) => {
   next();
 });
 
-// set middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -35,7 +32,6 @@ app.use(morgan('\x1b[34m:method \x1b[0m:url \x1b[33m:status \x1b[0m:res[content-
 app.use(fileUpload());
 app.use(device.capture({ parseUserAgent: true }));
 
-// Router handler
 const ending = JSON.parse(process.env.DEV || 'false') ? '.ts' : '.js';
 
 const files = sync(resolve(JSON.parse(process.env.DEV || 'false') ? './src/api/routes/**/*' : './api/routes/**/*' + ending));
@@ -51,14 +47,11 @@ files.forEach((file: string) => {
 });
 console.log('');
 
-// catch 404
 app.use((req: Request, res: Response, next: NextFunction) => {
   next(createError.NotFound());
 });
 
-// error handler
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  // render the error page
   res.status(err.status || 500);
 });
 
