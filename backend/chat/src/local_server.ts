@@ -9,7 +9,7 @@ dotenv.config();
 
 const local_server = new io.Server();
 
-const available_events = [ 'friend_request', 'test' ];
+const available_events = [ 'friend_request' ];
 
 local_server.on('connection', (socket) => {
   if (socket.handshake.address.replace('::ffff:', '') !== process.env.LOCAL_SERVER_IP)
