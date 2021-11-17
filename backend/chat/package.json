@@ -9,7 +9,8 @@
   },
   "scripts": {
     "start": "nodemon -r tsconfig-paths/register -L -e ts,js --exec ts-node src/server.ts",
-    "run": "node src/server.ts"
+    "run": "node src/server.ts",
+    "test": "jest --watchAll --verbose"
   },
   "author": "",
   "license": "ISC",

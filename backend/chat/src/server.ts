@@ -27,8 +27,6 @@ server.on('connection', (socket) => {
   // Handle disconnection
   socket.on('disconnect', () => User.handleDisconnection(socket));
   socket.on('error', () => User.handleDisconnection(socket));
-
-  socket.emit('connected');
 });
 
 server.listen(8080);

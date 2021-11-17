@@ -6,14 +6,14 @@ import { generateUUID, preEventError } from 'server/utils';
 import { Socket } from 'socket.io';
 
 export default class User implements USER {
-  readonly guid: string;
+  readonly uuid: string;
   readonly username: string;
   readonly name: string;
   readonly socket_id: string;
   unread_messages: string[];
 
-  protected constructor(guid: string, username: string, name: string, socket_id: string, unread_messages: string[]) {
-    this.guid = guid;
+  protected constructor(uuid: string, username: string, name: string, socket_id: string, unread_messages: string[]) {
+    this.uuid = uuid;
     this.username = username;
     this.name = name;
     this.socket_id = socket_id;
@@ -38,14 +38,14 @@ export default class User implements USER {
     };
 
     const name = username.toLowerCase();
-    const guid = generateUUID(username);
+    const uuid = generateUUID(username);
     const socket_id = socket.id;
 
     // TODO: client validation
 
-    const user_instance = new User(guid, username, name, socket_id, []);
+    const user_instance = new User(uuid, username, name, socket_id, []);
 
-    if (UserRegistry.has(guid)) {
+    if (UserRegistry.has(uuid)) {
       preEventError(socket, status_codes.MULTIPLE_SESSIONS)
       return null;
     }
@@ -64,11 +64,11 @@ export default class User implements USER {
 
   static handleDisconnection(socket: Socket): void {
     let user;
-    const guid = UserRegistry.get_by_socket_id(socket.id)?.guid;
-    if (guid) {
-      user = UserRegistry.get(guid);
+    const uuid = UserRegistry.get_by_socket_id(socket.id)?.uuid;
+    if (uuid) {
+      user = UserRegistry.get(uuid);
       if (user)
-        UserRegistry.remove(guid);
+        UserRegistry.remove(uuid);
     }
 
     delete server.cooldown_information[socket.id];

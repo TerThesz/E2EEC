@@ -12,4 +12,6 @@ export default new class StatusCodes {
   BAD_REQUEST_FORMAT = [ 7, 'Bad request format' ];
   BAD_DATA_FORMAT = [ 8, 'Bad data format' ];
   TOO_MANY_CALLS = [ 9, 'Too many calls' ];
+  FORBIDDEN = [ 10, 'Forbidden' ];
+  EVENT_NOT_FOUND = [ 11, 'Event not found' ];
 }
