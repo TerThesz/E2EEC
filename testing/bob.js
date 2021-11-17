@@ -3,7 +3,7 @@ const socket = io('http://127.0.0.1:8080', { query: "username=bob" });
 
 let sentAt = 0;
 
-socket.on('connected', () => {
+socket.on('connect', () => {
   console.log('Connected to server.');
 
   socket.emit('find user', request('al'), console.log);
@@ -42,6 +42,15 @@ socket.on('typing', (data) => {
 
 socket.on('delivered', (data) => {
   console.log('message delivered to: ' + data.target);
+});
+
+socket.on('friend request', (prd, cb) => {
+  console.log(prd);
+  cb(true)
+});
+
+socket.on('test', (cb) => {
+
 });
 
 function request(data, headers = {}) {

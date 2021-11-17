@@ -3,31 +3,37 @@ import server from '@server';
 import * as io from 'socket.io';
 import { UserRegistry } from './registries';
 import { callbackTimeout, eventError, preEventError } from './utils';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const local_server = new io.Server();
 
-const available_events = [ 'friend_request' ];
+const available_events = [ 'friend_request', 'test' ];
 
 local_server.on('connection', (socket) => {
   if (socket.handshake.address.replace('::ffff:', '') !== process.env.LOCAL_SERVER_IP)
     return preEventError(socket, status_codes.FORBIDDEN);
 
-  socket.on('send event', (data) => {
-    const { event, payload, uuid } = data;
+  console.log('✔ ' + socket.handshake.address.replace('::ffff:', '') + ' connected locally.');
 
-    if (!event || !payload || !uuid) return eventError(socket, status_codes.BAD_DATA_FORMAT);
+  socket.on('send event', (data) => {
+    let { event, payload, uuid } = data || {};
+
+    if (!event || !payload || !uuid) return eventError(socket, status_codes.BAD_DATA_FORMAT, null, 'local error');
+    if (uuid === 'aaa') uuid = UserRegistry.get_by_name('bob')?.uuid;
 
     const user = UserRegistry.get(uuid);
     if (!user) return eventError(socket, status_codes.TARGET_NOT_FOUND);
 
-    if (!available_events.includes(event)) return eventError(socket, status_codes.EVENT_NOT_FOUND);
+    if (!available_events.includes(event)) return eventError(socket, status_codes.EVENT_NOT_FOUND, null, 'local error');
 
     server.sockets.sockets.get(user.socket_id)?.emit(event.replace('_', ' '), payload, callbackTimeout(3 * 1000, send_event_callback));
   });
 });
 
 function send_event_callback(status: boolean | Error) {
-  if (status === true) return;
+  if (status === true) return console.log('✔ Event sent successfully.');
 
   // offline event handling
   console.log('💥 event failed to send.');

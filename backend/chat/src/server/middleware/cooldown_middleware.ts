@@ -17,7 +17,6 @@ const cooldownMiddleware = (socket: Socket) => {
       socket.emit('chat error', status_codes.TOO_MANY_CALLS);
 
       cooldowns.push(socket.handshake.address.toString());
-      console.log(1);
 
       socket.disconnect();
 

@@ -52,7 +52,7 @@ export default class User implements USER {
 
     UserRegistry.add(user_instance);
 
-    console.log(`${username} has connected`);
+    console.log(`🔗 ${username} has connected`);
 
     server.cooldown_information[socket.id] = {
       last_call: 0,
@@ -73,6 +73,6 @@ export default class User implements USER {
 
     delete server.cooldown_information[socket.id];
 
-    console.log(`${user?.username} has disconnected`);
+    console.log(`❌ ${user?.username} has disconnected`);
   }
 }

@@ -1,7 +1,7 @@
 const io = require('socket.io-client');
 const socket = io('http://127.0.0.1:8080', { query: "username=alice" });
 
-socket.on('connected', () => {
+socket.on('connect', () => {
   console.log('Connected to server.');
 });
 
@@ -39,3 +39,15 @@ function request(data, headers = {}) {
     data
   }
 }
+
+const local_socket = io('http://127.0.0.1:9090');
+
+local_socket.on('connect', () => {
+  local_socket.emit('send event');
+  local_socket.emit('send event', { event: 'dsgsdg', payload: 'ssfdsfg', uuid: 'sfsdsf' });
+  local_socket.emit('send event', { event: 'friend_request', payload: 'ssfdsfg', uuid: 'sfsdsf' });
+  local_socket.emit('send event', { event: 'friend_request', payload: 'ssfdsfg', uuid: 'aaa' });
+  local_socket.emit('send event', { event: 'test', payload: 'ssfdsfg', uuid: 'aaa' });
+});
+
+local_socket.on('local error', console.log);
