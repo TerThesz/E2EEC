@@ -34,14 +34,14 @@ app.use(device.capture({ parseUserAgent: true }));
 
 const ending = JSON.parse(process.env.DEV || 'false') ? '.ts' : '.js';
 
-const files = sync(resolve(JSON.parse(process.env.DEV || 'false') ? './src/api/routes/**/*' : './api/routes/**/*' + ending));
+const files = sync(resolve('./src/api/routes/**/*.ts'));
 console.log('');
 files.forEach((file: string) => {
     const _file = require(file);
     if (_file) {
         try {
-            app.use(file.replace(__dirname.replaceAll('\\', '/') + '/api/routes', '').replace(ending, ''), _file);
-            console.log(`Loaded \x1b[36m${file.replace(__dirname.replaceAll('\\', '/') + '/api/routes', '')} \x1b[0mas \x1b[36m${file.replace(__dirname.replaceAll('\\', '/') + '/api/routes', '').replace(ending, '')}\x1b[0m`);
+            app.use(file.replace(__dirname.replaceAll('\\', '/') + '/api/routes', '').replace('.ts', ''), _file);
+            console.log(`✔ Loaded \x1b[36m${file.replace(__dirname.replaceAll('\\', '/') + '/api/routes', '')} \x1b[0mas \x1b[36m${file.replace(__dirname.replaceAll('\\', '/') + '/api/routes', '').replace(ending, '')}\x1b[0m`);
         } catch { };
     }
 });
@@ -55,6 +55,8 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(err.status || 500);
 });
 
-app.listen(3000, '0.0.0.0', () => {
-  console.log('Running on 3000');
+app.listen(8000, '0.0.0.0', () => {
+  console.log('🛌 🏃 on 3000');
 });
+
+export default app;

@@ -2,10 +2,7 @@
 node_modules/
 .git
 
-# ADD THESE LINES
-# src/tests/
-# build/
-# src/config/
+build/
 
 package-lock.json
 .git

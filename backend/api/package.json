@@ -1,11 +1,11 @@
 {
-  "name": "api",
+  "name": "rest-chat-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "repository": "https://github.com/TerThesz/express-api-template",
+  "repository": "https://github.com/TerThesz/E2EEC",
   "scripts": {
-    "start": "DEV=true nodemon -L -e ts,js --exec ts-node src/api.ts",
+    "start": "nodemon -L -e ts,js --exec ts-node src/api.ts",
     "build": "yarn clean && tsc --project ./ && yarn copy",
     "clean": "rm -rf ./dist",
     "copy": "mkdir ./dist/config/ && cp ./src/config/* ./dist/config/ && cp .env ./dist"
@@ -36,8 +36,5 @@
     "typescript": "^4.3.4",
     "yup": "^0.32.9"
   },
-  "devDependencies": {
-    "@types/jest": "^27.0.2",
-    "jest": "^27.3.1"
-  }
+  "devDependencies": {}
 }
