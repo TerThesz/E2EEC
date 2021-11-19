@@ -10,4 +10,4 @@ dist
 !.yarn/versions
 .pnp.*
 
-./testing/
+testing/
