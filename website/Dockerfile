@@ -10,7 +10,7 @@ COPY . ./
 
 RUN yarn build
 
-FROM nginx:alpine
+FROM nginx:1.23.2-alpine
 
 COPY --from=build-deps /usr/src/app/build /usr/share/nginx/html
 
